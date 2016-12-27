@@ -8,8 +8,7 @@ class setup_actions:
 	def connect_all(self):
 
 		device_data = getdata.get_data()									
-		devices = device_data["Device_Details"] 															
-
+		devices = device_data["Device_Details"] 
 		for keys in devices.keys():
 
 			child = pexpect.spawn('telnet ' + devices[keys]['ip_add'] + ' ' + devices[keys]['port'])
