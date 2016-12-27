@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20161227 17:30:16.637" generator="Robot 3.0 (Python 2.7.12 on linux2)">
+<suite source="/home/guccha/bgp_test_case/27-12-2016/BGP.robot" id="s1" name="BGP">
+<kw type="setup" name="Setup Actions" library="Resource">
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Setup Actions done here</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:30:16.663" starttime="20161227 17:30:16.663"></status>
+</kw>
+<kw name="Connect All" library="setup">
+<msg timestamp="20161227 17:33:08.208" level="INFO">Unable to connect to remote host R4:Connection refused
+Unable to connect to remote host R5:Connection refused
+Device R1 in user mode
+1
+Hostname set
+Setting the password and hostname
+successfully executed  command
+successfully executed 				configure terminal command
+successfully executed 				hostname Device1  command
+successfully executed 				enable password router1 command
+successfully executed 				exit command
+successfully executed 				exit command
+successfully executed 				 command
+Hostname and Password set for R1
+Unable to connect to remote host R2:Connection refused
+Unable to connect to remote host R3:Connection refused</msg>
+<status status="PASS" endtime="20161227 17:33:08.209" starttime="20161227 17:30:16.663"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Initial setup completed</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:33:08.209" starttime="20161227 17:33:08.209"></status>
+</kw>
+<status status="PASS" endtime="20161227 17:33:08.209" starttime="20161227 17:30:16.663"></status>
+</kw>
+<test id="s1-t1" name="Bring_up Phase">
+<kw name="Configure IP addresses as per the topology" library="Resource">
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Configuring IP_Address</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:33:08.210" starttime="20161227 17:33:08.210"></status>
+</kw>
+<status status="PASS" endtime="20161227 17:33:08.210" starttime="20161227 17:33:08.210"></status>
+</kw>
+<kw name="Configure ip address">
+<msg timestamp="20161227 17:33:08.212" level="FAIL">No keyword with name 'Configure ip address' found. Did you mean:
+    Resource.Configuring IP Address</msg>
+<status status="FAIL" endtime="20161227 17:33:08.212" starttime="20161227 17:33:08.212"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:33:08.212" critical="yes" starttime="20161227 17:33:08.209">No keyword with name 'Configure ip address' found. Did you mean:
+    Resource.Configuring IP Address</status>
+</test>
+<kw type="teardown" name="Teardown Actions" library="Resource">
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Teardown Actions done here</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:33:08.213" starttime="20161227 17:33:08.213"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Unconfiguring IP_Address</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:33:08.213" starttime="20161227 17:33:08.213"></status>
+</kw>
+<kw name="Run Keyword And Continue On Failure" library="BuiltIn">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>Configuring IP_Address</arg>
+<arg>R1</arg>
+<arg>${Links_of_R1}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Configuring IP_Address" library="Resource">
+<arguments>
+<arg>R1</arg>
+<arg>${Links_of_R1}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Set IP" library="device">
+<arguments>
+<arg>${device}</arg>
+<arg>${links}</arg>
+<arg>${action}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20161227 17:36:19.398" level="INFO">flag=3
+Connection established with R1
+flag=3
+You are already logged in
+flag=1
+successfully executed  	 command
+successfully executed 							configure terminal command
+successfully executed 							interface f0/0 command
+successfully executed 							no ip address 192.168.23.3  255.255.255.0  command
+successfully executed 							shutdown					 command
+successfully executed 							exit command
+successfully executed 							exit command
+successfully executed 							 command
+IP address of  f0/0 interface of device R1  unset
+successfully executed  	 command
+successfully executed 							configure terminal command
+successfully executed 							interface f1/1 command
+successfully executed 							no ip address 192.168.34.3  255.255.255.0  command
+successfully executed 							shutdown					 command
+successfully executed 							exit command
+successfully executed 							exit command
+successfully executed 							 command
+IP address of  f1/1 interface of device R1  unset</msg>
+<msg timestamp="20161227 17:36:19.398" level="INFO">${result} = True</msg>
+<status status="PASS" endtime="20161227 17:36:19.398" starttime="20161227 17:33:08.214"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result}==False</arg>
+<arg>FAIL</arg>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:19.399" starttime="20161227 17:36:19.399"></status>
+</kw>
+<status status="PASS" endtime="20161227 17:36:19.399" starttime="20161227 17:33:08.213"></status>
+</kw>
+<status status="PASS" endtime="20161227 17:36:19.399" starttime="20161227 17:33:08.213"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>IP_Address unconfigured in R1</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:19.400" starttime="20161227 17:36:19.399"></status>
+</kw>
+<kw name="Run Keyword And Continue On Failure" library="BuiltIn">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>Configuring IP_Address</arg>
+<arg>R2</arg>
+<arg>${Links_of_R2}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Configuring IP_Address" library="Resource">
+<arguments>
+<arg>R2</arg>
+<arg>${Links_of_R2}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Set IP" library="device">
+<arguments>
+<arg>${device}</arg>
+<arg>${links}</arg>
+<arg>${action}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20161227 17:36:19.603" level="INFO">flag=4
+Unable to connect to remote host R2:Connection refused
+Device is OFF</msg>
+<msg timestamp="20161227 17:36:19.603" level="INFO">${result} = False</msg>
+<status status="PASS" endtime="20161227 17:36:19.603" starttime="20161227 17:36:19.400"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result}==False</arg>
+<arg>FAIL</arg>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<kw name="Fail" library="BuiltIn">
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<arguments>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<msg timestamp="20161227 17:36:19.604" level="FAIL">Configuring IP Address on R2 has failed</msg>
+<status status="FAIL" endtime="20161227 17:36:19.604" starttime="20161227 17:36:19.604"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:19.605" starttime="20161227 17:36:19.603"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:19.605" starttime="20161227 17:36:19.400"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:19.605" starttime="20161227 17:36:19.400"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>IP_Address unconfigured in R2</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:19.605" starttime="20161227 17:36:19.605"></status>
+</kw>
+<kw name="Run Keyword And Continue On Failure" library="BuiltIn">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>Configuring IP_Address</arg>
+<arg>R3</arg>
+<arg>${Links_of_R3}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Configuring IP_Address" library="Resource">
+<arguments>
+<arg>R3</arg>
+<arg>${Links_of_R3}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Set IP" library="device">
+<arguments>
+<arg>${device}</arg>
+<arg>${links}</arg>
+<arg>${action}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20161227 17:36:19.809" level="INFO">flag=4
+Unable to connect to remote host R3:Connection refused
+Device is OFF</msg>
+<msg timestamp="20161227 17:36:19.809" level="INFO">${result} = False</msg>
+<status status="PASS" endtime="20161227 17:36:19.809" starttime="20161227 17:36:19.606"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result}==False</arg>
+<arg>FAIL</arg>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<kw name="Fail" library="BuiltIn">
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<arguments>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<msg timestamp="20161227 17:36:19.810" level="FAIL">Configuring IP Address on R3 has failed</msg>
+<status status="FAIL" endtime="20161227 17:36:19.810" starttime="20161227 17:36:19.810"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:19.810" starttime="20161227 17:36:19.809"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:19.810" starttime="20161227 17:36:19.605"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:19.810" starttime="20161227 17:36:19.605"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>IP_Address unconfigured in R3</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:19.811" starttime="20161227 17:36:19.811"></status>
+</kw>
+<kw name="Run Keyword And Continue On Failure" library="BuiltIn">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>Configuring IP_Address</arg>
+<arg>R4</arg>
+<arg>${Links_of_R4}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Configuring IP_Address" library="Resource">
+<arguments>
+<arg>R4</arg>
+<arg>${Links_of_R4}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Set IP" library="device">
+<arguments>
+<arg>${device}</arg>
+<arg>${links}</arg>
+<arg>${action}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20161227 17:36:20.014" level="INFO">flag=4
+Unable to connect to remote host R4:Connection refused
+Device is OFF</msg>
+<msg timestamp="20161227 17:36:20.014" level="INFO">${result} = False</msg>
+<status status="PASS" endtime="20161227 17:36:20.014" starttime="20161227 17:36:19.811"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result}==False</arg>
+<arg>FAIL</arg>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<kw name="Fail" library="BuiltIn">
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<arguments>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<msg timestamp="20161227 17:36:20.016" level="FAIL">Configuring IP Address on R4 has failed</msg>
+<status status="FAIL" endtime="20161227 17:36:20.016" starttime="20161227 17:36:20.015"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.016" starttime="20161227 17:36:20.015"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.016" starttime="20161227 17:36:19.811"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.016" starttime="20161227 17:36:19.811"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>IP_Address unconfigured in R4</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:20.016" starttime="20161227 17:36:20.016"></status>
+</kw>
+<kw name="Run Keyword And Continue On Failure" library="BuiltIn">
+<doc>Runs the keyword and continues execution even if a failure occurs.</doc>
+<arguments>
+<arg>Configuring IP_Address</arg>
+<arg>R5</arg>
+<arg>${Links_of_R5}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Configuring IP_Address" library="Resource">
+<arguments>
+<arg>R5</arg>
+<arg>${Links_of_R5}</arg>
+<arg>unconfigure</arg>
+</arguments>
+<kw name="Set IP" library="device">
+<arguments>
+<arg>${device}</arg>
+<arg>${links}</arg>
+<arg>${action}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20161227 17:36:20.219" level="INFO">flag=4
+Unable to connect to remote host R5:Connection refused
+Device is OFF</msg>
+<msg timestamp="20161227 17:36:20.220" level="INFO">${result} = False</msg>
+<status status="PASS" endtime="20161227 17:36:20.220" starttime="20161227 17:36:20.017"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result}==False</arg>
+<arg>FAIL</arg>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<kw name="Fail" library="BuiltIn">
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<arguments>
+<arg>Configuring IP Address on ${device} has failed</arg>
+</arguments>
+<msg timestamp="20161227 17:36:20.221" level="FAIL">Configuring IP Address on R5 has failed</msg>
+<status status="FAIL" endtime="20161227 17:36:20.221" starttime="20161227 17:36:20.221"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.221" starttime="20161227 17:36:20.220"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.221" starttime="20161227 17:36:20.016"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.221" starttime="20161227 17:36:20.016"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>IP_Address unconfigured in R5</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:20.222" starttime="20161227 17:36:20.221"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Unsetting loopback interface</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:20.222" starttime="20161227 17:36:20.222"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>@{Devices}</arg>
+</arguments>
+<msg timestamp="20161227 17:36:20.222" level="FAIL">Value of variable '@{Devices}' is not list or list-like.</msg>
+<status status="FAIL" endtime="20161227 17:36:20.222" starttime="20161227 17:36:20.222"></status>
+</kw>
+<kw type="for" name="${ELEMENT} IN [ @{Devices} ]">
+<msg timestamp="20161227 17:36:20.222" level="FAIL">FOR loop contains no keywords.</msg>
+<status status="FAIL" endtime="20161227 17:36:20.222" starttime="20161227 17:36:20.222"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>${ELEMENT}</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:20.222" starttime="20161227 17:36:20.222"></status>
+</kw>
+<kw name="Setting Loopback interface" library="Resource">
+<arguments>
+<arg>${ELEMENT}</arg>
+<arg>unset</arg>
+</arguments>
+<kw name="Set Loopback" library="device">
+<arguments>
+<arg>${device}</arg>
+<arg>${action}</arg>
+</arguments>
+<assign>
+<var>${result}</var>
+</assign>
+<msg timestamp="20161227 17:36:20.223" level="INFO">${result} = None</msg>
+<msg timestamp="20161227 17:36:20.223" level="FAIL">KeyError: ''</msg>
+<status status="FAIL" endtime="20161227 17:36:20.223" starttime="20161227 17:36:20.223"></status>
+</kw>
+<kw name="Run Keyword If" library="BuiltIn">
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<arguments>
+<arg>${result}==False</arg>
+<arg>FAIL</arg>
+<arg>Configuring Loopback IP on ${device} has failed</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:20.224" starttime="20161227 17:36:20.223"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.224" starttime="20161227 17:36:20.223"></status>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<doc>Logs the given message to the console.</doc>
+<arguments>
+<arg>Loopback_address unset in ${ELEMENT}</arg>
+</arguments>
+<status status="PASS" endtime="20161227 17:36:20.225" starttime="20161227 17:36:20.224"></status>
+</kw>
+<status status="FAIL" endtime="20161227 17:36:20.225" starttime="20161227 17:33:08.212">Several failures occurred:
+
+1) Configuring IP Address on R2 has failed
+
+2) Configuring IP Address on R3 has failed
+
+3) Configuring IP Address on R4 has failed
+
+4) Configuring IP Address on R5 has failed
+
+5) Value of variable '@{Devices}' is not list or list-like.
+
+6) FOR loop contains no keywords.
+
+7) KeyError: ''</status>
+</kw>
+<doc>A test suite with tests for configuring BGP.
+Topology:-
+____________________________
+| R1 AS2 |
+| /  |
+| /  |
+| R2 R3 |
+|_________|________|_________|
+| |
+______|__ ___|______
+| AS1| | AS3|
+| R4 | | R5 |
+|_________| |__________|
+Testplan Goals:-
+1. Configure IP addresses as per the topology.
+2. Each Router should have a loopback0 interface.
+3. Configure OSPF within AS2 to advertise the loopback0 interfaces.
+Don't advertise or run OSPF on the links interconnecting AS1 and AS3.
+4. Configure IBGP between R2 and R3. Source the BGP updates from the loopback0 interfaces.
+5. Enable BGP synchronisation.
+6. Configure EBGP between R2 and R4.
+7. Configure EBGP between R3 and R5.
+8. Advertise the loopback0 interfaces on R4 and R5.
+9. Ensure AS1 and AS3 can communicate with each other without removing the BGP synchronisation command.</doc>
+<metadata>
+<item name="Version">1.0
+More Info For more information about Robot Framework see http://robotframework.org
+Author Payal Jain
+Date 19 Dec 2016
+Executed At ${HOST}
+Test Framework Robot Framework Python</item>
+</metadata>
+<status status="FAIL" endtime="20161227 17:36:20.225" starttime="20161227 17:30:16.638">Suite teardown failed:
+Several failures occurred:
+
+1) Configuring IP Address on R2 has failed
+
+2) Configuring IP Address on R3 has failed
+
+3) Configuring IP Address on R4 has failed
+
+4) Configuring IP Address on R5 has failed
+
+5) Value of variable '@{Devices}' is not list or list-like.
+
+6) FOR loop contains no keywords.
+
+7) KeyError: ''</status>
+</suite>
+<statistics>
+<total>
+<stat fail="1" pass="0">Critical Tests</stat>
+<stat fail="1" pass="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="1" id="s1" name="BGP" pass="0">BGP</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
