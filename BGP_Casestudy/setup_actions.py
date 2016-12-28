@@ -8,14 +8,15 @@ class setup_actions:
 	def connect_all(self):
 
 		device_data = getdata.get_data()									
-		devices = device_data["Device_Details"] 
+		devices = device_data["Device_Details"] 															
+
 		for keys in devices.keys():
 
 			child = pexpect.spawn('telnet ' + devices[keys]['ip_add'] + ' ' + devices[keys]['port'])
 			child.sendline('\n')
 			child.sendcontrol('m')
 			hostname = devices[keys]['Hostname']
- 			flag = (child.expect(['Would','Router',hostname,pexpect.EOF,pexpect.TIMEOUT],timeout=100))
+ 			flag = (child.expect(['Would','Router',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=100))
 			if flag == 0:
 				time.sleep(35)
 				print 'Telnet connection established with device '+keys
@@ -26,12 +27,15 @@ class setup_actions:
 				child.sendcontrol('m')
 				flag = 1
 			
-			if (flag == 1 or flag == 2):
+			if (flag == 1):
 				time.sleep(35)
 				print "Device %s in user mode" % keys
 				child.expect(['Router',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=40)
 				child.sendcontrol('m')
 				self._enable_pwd(child,keys,devices)
+
+			if flag == 2 or flag == 3:
+				print "Hostname and password already set"
 			
 			if flag == 3:
 				print 'Unable to connect to remote host %s:Connection refused' % keys
@@ -53,9 +57,12 @@ class setup_actions:
 		flag = child.expect([hostname+'>',hostname+'#','Router',pexpect.EOF,pexpect.TIMEOUT],timeout=80)
 		print flag
 
-		if (flag == 0 or flag == 1):
+		if (flag == 0):
 			print 'Hostname set'
 			flag=2
+
+		if flag == 1:
+			print 'Hostname set'
 
 		if flag == 2:
 			child.sendcontrol('m')
