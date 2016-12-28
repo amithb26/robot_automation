@@ -58,17 +58,24 @@ class Device:
 			child.send(Password)
 			child.sendcontrol('m')
 			time.sleep(90)
-			flag1 = child.expect(['Router#',hostname+'#',hostname+'>',pexpect.EOF,pexpect.TIMEOUT],timeout=60)
+			self.flushBuffer(5,child)
+			child.sendcontrol('m')
+			child.sendcontrol('m')
+			child.sendcontrol('m')
+			flag1 = child.expect([hostname+'>',hostname+'#','Router#',pexpect.EOF,pexpect.TIMEOUT],timeout=60)
 			print 'flag1=%s' %flag1
 
-			if flag1 == 0 or flag1 == 1:
+			if flag1 == 1 or flag1 == 2:
                 		print "Successful login to a device"
 				print "Device, now in priveleged mode"
 				
-			else:
+			if flag1 == 0:
 				print "pwd not sent"
 				self.Login(Device,child)
-			
+
+			if flag1 ==3 or flag1 == 4:
+				print "Eof or Timeout"
+
 
 
 		if flag == 1 or flag == 3:
@@ -252,6 +259,9 @@ class Device:
 		if (child):
 
 			self.flushBuffer(10,child)
+			child.sendcontrol('m')
+			child.sendcontrol('m')
+			child.sendcontrol('m')
 			time.sleep(20)
 			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=90)
 			print 'flag =%d' % flag
@@ -326,7 +336,7 @@ class Device:
 			pass
 		# Clear local input buffer inside the spawn Class
 		child.buffer = child.string_type()
-		return child.before
+		return child
 
 
 	
