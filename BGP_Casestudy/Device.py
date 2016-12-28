@@ -46,7 +46,7 @@ class Device:
 		hostname = device_data['Device_Details'][Device]['Hostname']
 		Password = device_data['Device_Details'][Device]['pwd']
 		#self.flushBuffer(5,child)
-		flag = child.expect(['Router\>','Router\#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=100)
+		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=100)
 		print 'flag=%d' % flag
 
 		if flag == 0 or flag == 2:
@@ -57,15 +57,18 @@ class Device:
 			
 			child.send(Password)
 			child.sendcontrol('m')
-			time.sleep(20)
-			flag1 = child.expect(['Router\#',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=40)
+			time.sleep(90)
+			flag1 = child.expect(['Router#',hostname+'#',hostname+'>',pexpect.EOF,pexpect.TIMEOUT],timeout=60)
+			print 'flag1=%s' %flag1
 
 			if flag1 == 0 or flag1 == 1:
                 		print "Successful login to a device"
 				print "Device, now in priveleged mode"
+				
 			else:
-				print "password not sent"
+				print "pwd not sent"
 				self.Login(Device,child)
+			
 
 
 		if flag == 1 or flag == 3:
@@ -241,9 +244,9 @@ class Device:
 
 		device_data = getdata.get_data()
 		hostname = device_data['Device_Details'][Device]['Hostname']
-		time.sleep(50)
-		flag = child.expect([hostname+'>','Router\>',pexpect.EOF,pexpect.TIMEOUT],timeout=90)
-		print 'flag(ospf) = %s' %flag
+		#time.sleep(50)
+		#flag = child.expect([hostname+'>','Router\>',pexpect.EOF,pexpect.TIMEOUT],timeout=90)
+		#print 'flag(ospf) = %s' %flag
 		child = self.connect(Device)
 
 		if (child):
@@ -312,8 +315,18 @@ class Device:
 		        return True
 		
 		else:
-			return False			
+			return False
 
+
+				
+	def flushBuffer(self,delay,child):
+		try:# Greedily read in all the incoming characters
+			child.expect("ZzqQJjSh_Impossible_String", timeout = delay)
+		except pexpect.TIMEOUT:
+			pass
+		# Clear local input buffer inside the spawn Class
+		child.buffer = child.string_type()
+		return child.before
 
 
 	
