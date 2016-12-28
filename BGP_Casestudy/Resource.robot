@@ -8,7 +8,7 @@ Variables         variable.py
 
 
 *** Variables ***
-@{Devices}
+@{Devices} =      R1    R2    R3    R4    R5 
 ${ELEMENT}
 
 *** Keywords ***
@@ -37,19 +37,17 @@ Teardown Actions
     Log To Console            IP_Address unconfigured in R5
 		
     Log To Console            Unsetting loopback interface	
-    Log To Console            @{Devices}
+    Log To Console            ${Devices}
     :FOR    ${ELEMENT}    IN    @{Devices}
-         Log To Console    ${ELEMENT}
-         Setting Loopback interface    ${ELEMENT}    unset
-         Log To Console    Loopback_address unset in ${ELEMENT} 
+    \    Log To Console    ${ELEMENT}
+    \    Setting Loopback interface    ${ELEMENT}    unset
+    \    Log To Console    Loopback_address unset in ${ELEMENT} 
 
     
 Configure IP addresses as per the topology
     
     Log To Console            Configuring IP_Address 
- 
-*** Comment *** 
- 
+  
 Configure ip address
 
     Log To Console            Configuring IP_Address 
