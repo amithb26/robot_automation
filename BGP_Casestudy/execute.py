@@ -11,7 +11,6 @@ def execute(child,commands):
 			child.send(cmd)
 			child.sendcontrol('m')
 			child.sendcontrol('m')
-			print 'successfully executed %s command' % cmd
 	child.expect(['exit',pexpect.EOF,pexpect.TIMEOUT],timeout=60)
 	print child.before
 	return

@@ -38,36 +38,30 @@ Resource          Resource.robot
 
 Suite Setup       Setup Actions
 
-Suite Teardown    Teardown Actions
+
+#Suite Teardown    Teardown Actions
 
 *** Test Cases ***
-
-
 
 Bring_up Phase
     
     Configure IP addresses as per the topology
 	    Configure ip address 
 	    Set loopback interface
-
-
+   
     Configure OSPF within AS2 to advertise the connected networks
 	    Enable OSPF in devices present in AS2 and set the ospf neighbors
 
-   
-	    
 
-*** Comment ***
     Configure IBGP and source the BGP updates from the loopback0 interfaces
-	    STEP 1  Enable BGP 
-	    STEP 2  Advertise the updates from the loopback interface
+	    Enable BGP and advertise the updates from the loopback interface
 
     Enable BGP Synchronisation
-	    STEP 1  Enable  synchronisation between border routers
+	    Enable synchronisation between border routers
+
 
     Configure EBGP 
-	    STEP 1  Enable BGP
-	    STEP 2  Advertise networks connected outside the autonomous system
+	    Enable BGP and advertise networks connected outside the autonomous system
 
     Advertise the loopback interface
 	    STEP 1  Advertise loopback interface on AS1 and AS3

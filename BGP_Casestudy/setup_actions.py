@@ -2,10 +2,11 @@ import pexpect
 import getdata
 import time
 import execute
+import clear_buffer
 
 class setup_actions:
 
-	def connect_all(self):
+	def connect_all(self,Action):
 
 		device_data = getdata.get_data()									
 		devices = device_data["Device_Details"] 															
@@ -16,6 +17,10 @@ class setup_actions:
 			child.sendline('\n')
 			child.sendcontrol('m')
 			hostname = devices[keys]['Hostname']
+			#clear_buffer.flushBuffer(10,child)
+			#child.sendcontrol('m')
+			#child.sendcontrol('m')
+			child.sendcontrol('m')
  			flag = (child.expect(['Would','Router',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=100))
 			if flag == 0:
 				time.sleep(35)
@@ -36,7 +41,37 @@ class setup_actions:
 
 			if flag == 2 or flag == 3:
 				print "Hostname and password already set"
-			
+				pwd = devices[keys]['pwd']
+				if Action == 'disable':
+					child.sendcontrol('m')
+					child.send('enable')
+					child.sendcontrol('m')
+					child.sendcontrol('m')
+					pwd = child.expect(['Password',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
+
+					if pwd != 0:
+						print "Password already unset"
+				
+					if pwd == 0:
+						print "unset the password and hostname"
+						unconfig = """
+						%s
+						configure terminal
+						no hostname %s 
+						no enable password %s
+						exit
+						exit
+						""" % (pwd,hostname,devices[keys]['pwd'])
+						commands = unconfig.split('\n')
+						execute.execute(child,commands)
+						child.sendcontrol('m')
+						child.sendcontrol('m')
+						time.sleep(10)
+						print "Hostname and Password unset for %s" % keys
+		
+				else:	
+					print " "
+
 			if flag == 3:
 				print 'Unable to connect to remote host %s:Connection refused' % keys
 
@@ -54,9 +89,12 @@ class setup_actions:
 		time.sleep(10)
 		child.sendcontrol('m')
 		hostname = devices[keys]['Hostname']
+		clear_buffer.flushBuffer(10,child)
+		child.sendcontrol('m')
+		child.sendcontrol('m')
+		child.sendcontrol('m')
 		flag = child.expect([hostname+'>',hostname+'#','Router',pexpect.EOF,pexpect.TIMEOUT],timeout=80)
 		print flag
-
 		if (flag == 0):
 			print 'Hostname set'
 			flag=2
@@ -86,21 +124,20 @@ class setup_actions:
 				child.sendcontrol('m')
 				time.sleep(10)
 				print "Hostname and Password set for %s" % keys
-		
+			
 			if pwd == 0:
 				child.send('\n')
-				child.send('\n')
-				child.sendline('\n')
 				child.sendcontrol('m')
 				print "Password already set"
 				child.sendcontrol('m')
 				child.sendcontrol('m')
 				child.sendcontrol('m')
-				child.sendcontrol('m')
-		else:
-			print 'EOF or Timeout reached,no expected prompt found'
+					
+			else:	
+				print 'EOF or Timeout reached,no expected prompt found'
 
-		return
+		else:
+			print "EOF or timeout "
 
 	
 #setup = setup_actions()

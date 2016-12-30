@@ -5,7 +5,7 @@ import execute
 import sys
 
 
-class Device:
+class Devices:
 
 	def connect(self,Device):
 
@@ -15,13 +15,12 @@ class Device:
 		Password = device_data['Device_Details'][Device]['pwd']	
 		hostname = device_data['Device_Details'][Device]['Hostname']
 		child = pexpect.spawn('telnet ' + IP_add + ' ' + Port_no)
-		child.sendline('\n')
 		child.sendcontrol('m')
 		child.sendcontrol('m')
 		#self.flushBuffer(5,child)
 		child.sendcontrol('m')
-		child.sendcontrol('m')
-		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=90)
+		#child.sendcontrol('m')
+		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
 		print 'flag=%d' % flag
 
 		if (flag == 0 or flag == 1  or flag == 2  or flag == 3):
@@ -46,10 +45,10 @@ class Device:
 		hostname = device_data['Device_Details'][Device]['Hostname']
 		Password = device_data['Device_Details'][Device]['pwd']
 		self.flushBuffer(5,child)
+		#child.sendcontrol('m')
+		#child.sendcontrol('m')
 		child.sendcontrol('m')
-		child.sendcontrol('m')
-		child.sendcontrol('m')
-		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=100)
+		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
 		print 'flag=%d' % flag
 
 		if flag == 0 or flag == 2:
@@ -60,12 +59,12 @@ class Device:
 			
 			child.send(Password)
 			child.sendcontrol('m')
-			time.sleep(90)
+			#time.sleep(90)
 			self.flushBuffer(5,child)
 			child.sendcontrol('m')
 			child.sendcontrol('m')
 			child.sendcontrol('m')
-			flag1 = child.expect([hostname+'>',hostname+'#','Router#',pexpect.EOF,pexpect.TIMEOUT],timeout=60)
+			flag1 = child.expect([hostname+'>',hostname+'#','Router#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
 			print 'flag1=%s' %flag1
 
 			if flag1 == 1 or flag1 == 2:
@@ -98,20 +97,20 @@ class Device:
 			device_data = getdata.get_data()
 			hostname = device_data['Device_Details'][Device]['Hostname']
 			self.flushBuffer(5,child)
+			#child.sendcontrol('m')
+			#child.sendcontrol('m')
 			child.sendcontrol('m')
-			child.sendcontrol('m')
-			child.sendcontrol('m')
-			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=90)		
+			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)		
 			print 'flag=%d' % flag
 
 			if (flag == 4 or flag == 5):
 				print "Expected prompt not present"
-				time.sleep(5)
+				#time.sleep(5)
 				child.sendcontrol('m')
 		
 			if (flag == 0 or flag == 2):
 				self.Login(Device,child)
-				time.sleep(35)
+				#time.sleep(35)
 				flag=1
 
 
@@ -135,7 +134,7 @@ class Device:
 							""" % (interface,interface_add)
 							commands = configs.split('\n')
 							execute.execute(child,commands)
-							time.sleep(10)
+							#time.sleep(10)
 						        child.sendcontrol('m')
 							print "IP address of  %s interface of device %s  set" % (interface,Device)
 					        child.sendline('exit')
@@ -153,7 +152,7 @@ class Device:
 						""" % (interface,interface_add)
 						commands = configs.split('\n')
 						execute.execute(child,commands)
-						time.sleep(6)
+						#time.sleep(6)
 						child.sendcontrol('m')
 						print "IP address of  %s interface of device %s  set" % (interface,Device)
 						child.sendline('exit')
@@ -176,7 +175,8 @@ class Device:
 							""" % (interface,interface_add)
 							commands = unconfig.split('\n')
 							execute.execute(child,commands)
-							time.sleep(40)
+							#time.sleep(40)
+							child.sendline('exit')
 							child.sendcontrol('m')
 							print "IP address of  %s interface of device %s  unset" % (interface,Device)
 						
@@ -193,7 +193,7 @@ class Device:
 						""" % (interface,interface_add)
 						commands = unconfig.split('\n')
 						execute.execute(child,commands)
-						time.sleep(50)
+						#time.sleep(50)
 						child.sendcontrol('m')
 						print "IP address of  %s interface of device %s  unset" % (interface,Device)
 						
@@ -214,7 +214,7 @@ class Device:
 			child.sendcontrol('m')
 			child.sendcontrol('m')
 			child.sendcontrol('m')
-			child.expect([hostname+'\#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
+			child.expect([hostname+'\#',pexpect.EOF,pexpect.TIMEOUT],timeout=60)
 			child.sendcontrol('m')
 			LO_interface_add = device_data['Device_Details'][Device]['lo']
 			if Action == 'set':
@@ -222,15 +222,13 @@ class Device:
 				configs = """
 					configure terminal
 					interface %s
-					ip address %s 
-					no shutdown					
-					exit
-					exit
+					ip address %s 					
+					end
 					exit
 					""" % ('loopback0',LO_interface_add)
 				commands = configs.split('\n')
 				execute.execute(child,commands)
-				time.sleep(40)
+				#time.sleep(40)
 				child.sendcontrol('m')
 				print "IP address of  loopback interface of device %s  set" % (Device)
 				
@@ -238,170 +236,21 @@ class Device:
 				unconfig = """ 	
 					configure terminal
 					interface %s
-					no ip address 
-					shutdown					
+					ip address 127.0.0.1 255.255.255.255
+					end
 					exit
-					exit
-					exit
-					""" % ('lo')
+					""" % ('loopback0')
 				commands = unconfig.split('\n')
 				execute.execute(child,commands)
-				time.sleep(40)
+				#time.sleep(40)
 				child.sendcontrol('m')
 				child.sendcontrol('m')
 				
- 			return True
+ 			return True 
 		else:
 			return False
 
-
-
-
-	def Configure_ospf(self,Device,process_id,Networks_connected,Area,Action):
-
-		device_data = getdata.get_data()
-		hostname = device_data['Device_Details'][Device]['Hostname']
-		#time.sleep(50)
-		#flag = child.expect([hostname+'>','Router\>',pexpect.EOF,pexpect.TIMEOUT],timeout=90)
-		#print 'flag(ospf) = %s' %flag
-		child = self.connect(Device)
-
-		if (child):
-
-			self.flushBuffer(10,child)
-			child.sendcontrol('m')
-			child.sendcontrol('m')
-			child.sendcontrol('m')
-			time.sleep(20)
-			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=90)
-			print 'flag =%d' % flag
-			if flag==0 or flag==2:
-				self.Login(Device,child)
-				if Action == 'enable':
-					if (isinstance(Networks_connected,list)):
-						for NID in Networks_connected:
-								print NID
-								configs = """
-					 			enable
-								configure terminal
-								router ospf %s
-								network %s area %s 
-								exit
-								exit
-								""" % (process_id,NID,Area)
-								commands = configs.split('\n')
-								execute.execute(child,commands)
-								time.sleep(6)
-								child.sendcontrol('m')
-								print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
-								time.sleep(30)
-						child.sendline('exit')
-						child.sendcontrol('m')
-						print "OSPF enabled & neighbors set in %s" % Device
-					else:
-						NID = Networks_connected
-						configs = """
-						enable
-						configure terminal
-						router ospf %s
-						network %s area %s
-						exit
-						exit
-						exit 
-						""" % (process_id,NID,Area)
-						commands = configs.split('\n')
-						execute.execute(child,commands)
-						time.sleep(15)
-						child.sendcontrol('m')
-						print '%s advertises I AM CONNECTED TO %s NETWORK' % (Device,NID)
-						print "OSPF enabled & neighbors set in %s" % Device
-
-				else:
-					unconfig = """
-					enable
-					configure terminal
-					router ospf %s
-					no network %s area %s
-					exit
-					exit
-					exit 
-					""" % (process_id,NID,Area)
-					commands = configs.split('\n')
-					execute.execute(child,commands)
-					time.sleep(15)
-					child.sendcontrol('m')
-					print "OSPF disabled  and neighbors unset in %s" % Device
 			
-
-		
-			if flag == 1 or flag == 3:
-				if Action == 'enable':
-					if (isinstance(Networks_connected,list)):
-						for NID in Networks_connected:
-								print NID
-								configs = """
-					 			enable
-								configure terminal
-								router ospf %s
-								network %s area %s 
-								exit
-								exit
-								""" % (process_id,NID,Area)
-								commands = configs.split('\n')
-								execute.execute(child,commands)
-								time.sleep(6)
-								child.sendcontrol('m')
-								print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
-								time.sleep(30)
-						child.sendline('exit')
-						child.sendcontrol('m')
-						print "OSPF enabled & neighbors set in %s" % Device
-					else:
-						NID = Networks_connected
-						configs = """
-						enable
-						configure terminal
-						router ospf %s
-						network %s area %s
-						exit
-						exit
-						exit 
-						""" % (process_id,NID,Area)
-						commands = configs.split('\n')
-						execute.execute(child,commands)
-						time.sleep(15)
-						child.sendcontrol('m')
-						print '%s advertises I AM CONNECTED TO %s NETWORK' % (Device,NID)
-						print "OSPF enabled & neighbors set in %s" % Device
-
-				else:
-					unconfig = """
-					enable
-					configure terminal
-					router ospf %s
-					no network %s area %s
-					exit
-					exit
-					exit 
-					""" % (process_id,NID,Area)
-					commands = configs.split('\n')
-					execute.execute(child,commands)
-					time.sleep(15)
-					child.sendcontrol('m')
-					print "OSPF disabled  and neighbors unset in %s" % Device
-			
-
-		
-			else:
-				print 'Expected prompt not found'
-
-		        return True
-		
-		else:
-			return False
-
-
-				
 	def flushBuffer(self,delay,child):
 		try:# Greedily read in all the incoming characters
 			child.expect("ZzqQJjSh_Impossible_String", timeout = delay)
@@ -409,7 +258,7 @@ class Device:
 			pass
 		# Clear local input buffer inside the spawn Class
 		child.buffer = child.string_type()
-		return child
+		return child.before
 
 
 	
@@ -418,7 +267,7 @@ class Device:
 
 
 		
-dev =  Device()
+dev =  Devices()
 #dev.set_IP('R1',["Link_R1_R2_1","Link_R1_R3_1"],'configure')
 #dev.set_IP('R2',["Link_R1_R2_1","Link_R2_R4_1"],'configure')
 #dev.set_loopback('R1','set')

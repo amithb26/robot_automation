@@ -30,7 +30,10 @@ Networks_connected_to_R2 = ["192.168.23.0  0.0.0.255","2.2.2.0  0.0.0.255"]
 Networks_connected_to_R3 = ["192.168.34.0  0.0.0.255","4.4.4.0  0.0.0.255"]
 
 #BGP
-
+AS_id = 2
+R2_interface = "2.2.2.2"
+R3_interface = "4.4.4.4"
+ 
 
 
 
