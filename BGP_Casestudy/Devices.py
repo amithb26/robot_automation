@@ -3,6 +3,7 @@ import getdata
 import time
 import execute
 import sys
+import clear_buffer
 
 
 class Devices:
@@ -21,19 +22,19 @@ class Devices:
 		child.sendcontrol('m')
 		#child.sendcontrol('m')
 		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
-		print 'flag=%d' % flag
+		#print 'flag=%d' % flag
 
 		if (flag == 0 or flag == 1  or flag == 2  or flag == 3):
 		        #time.sleep(35)
-			print 'Connection established with %s' % Device
+			#print 'Connection established with %s' % Device
 			self.Login(Device,child)
 
 		if flag == 4:
-			print 'Unable to connect to remote host %s:Connection refused' %Device
+			#print 'Unable to connect to remote host %s:Connection refused' %Device
 			return False
 
 		if flag == 5:
-			print 'Timeout. Trying to connect again'
+			#print 'Timeout. Trying to connect again'
 			self.connect(Device)
 
 		return child
@@ -44,12 +45,12 @@ class Devices:
 		device_data = getdata.get_data()
 		hostname = device_data['Device_Details'][Device]['Hostname']
 		Password = device_data['Device_Details'][Device]['pwd']
-		self.flushBuffer(5,child)
+		clear_buffer.flushBuffer(5,child)
 		#child.sendcontrol('m')
 		#child.sendcontrol('m')
 		child.sendcontrol('m')
 		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
-		print 'flag=%d' % flag
+		#print 'flag=%d' % flag
 
 		if flag == 0 or flag == 2:
 			#child.sendcontrol('m')
@@ -60,31 +61,31 @@ class Devices:
 			child.send(Password)
 			child.sendcontrol('m')
 			#time.sleep(90)
-			self.flushBuffer(5,child)
+			clear_buffer.flushBuffer(5,child)
 			child.sendcontrol('m')
 			child.sendcontrol('m')
 			child.sendcontrol('m')
 			flag1 = child.expect([hostname+'>',hostname+'#','Router#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
-			print 'flag1=%s' %flag1
+		#	print 'flag1=%s' %flag1
 
-			if flag1 == 1 or flag1 == 2:
-                		print "Successful login to a device"
-				print "Device, now in priveleged mode"
+		#	if flag1 == 1 or flag1 == 2:
+                #		print "Successful login to a device"
+		#		print "Device, now in priveleged mode"
 				
 			if flag1 == 0:
-				print "pwd not sent"
+		#		print "pwd not sent"
 				self.Login(Device,child)
 
-			if flag1 ==3 or flag1 == 4:
-				print "Eof or Timeout"
+		#	if flag1 ==3 or flag1 == 4:
+		#		print "Eof or Timeout"
 
 
 
-		if flag == 1 or flag == 3:
-			print "You are already logged in"
+		#if flag == 1 or flag == 3:
+		#	print "You are already logged in"
 
-	        if flag == 4 or flag == 5:
-			print "Device in expecting password prompt"	
+	        #if flag == 4 or flag == 5:
+		#	print "Device in expecting password prompt"	
 
 		return
 
@@ -96,15 +97,15 @@ class Devices:
 		if (child):
 			device_data = getdata.get_data()
 			hostname = device_data['Device_Details'][Device]['Hostname']
-			self.flushBuffer(5,child)
+			clear_buffer.flushBuffer(5,child)
 			#child.sendcontrol('m')
 			#child.sendcontrol('m')
 			child.sendcontrol('m')
 			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)		
-			print 'flag=%d' % flag
+		#	print 'flag=%d' % flag
 
 			if (flag == 4 or flag == 5):
-				print "Expected prompt not present"
+		#		print "Expected prompt not present"
 				#time.sleep(5)
 				child.sendcontrol('m')
 		
@@ -136,7 +137,7 @@ class Devices:
 							execute.execute(child,commands)
 							#time.sleep(10)
 						        child.sendcontrol('m')
-							print "IP address of  %s interface of device %s  set" % (interface,Device)
+		#					print "IP address of  %s interface of device %s  set" % (interface,Device)
 					        child.sendline('exit')
 					        child.sendcontrol('m')
 					else:
@@ -154,7 +155,7 @@ class Devices:
 						execute.execute(child,commands)
 						#time.sleep(6)
 						child.sendcontrol('m')
-						print "IP address of  %s interface of device %s  set" % (interface,Device)
+		#				print "IP address of  %s interface of device %s  set" % (interface,Device)
 						child.sendline('exit')
 					        child.sendcontrol('m')
 					
@@ -178,7 +179,7 @@ class Devices:
 							#time.sleep(40)
 							child.sendline('exit')
 							child.sendcontrol('m')
-							print "IP address of  %s interface of device %s  unset" % (interface,Device)
+		#					print "IP address of  %s interface of device %s  unset" % (interface,Device)
 						
 					else:
 						interface = device_data['Link_Details'][Link][Device]
@@ -195,12 +196,12 @@ class Devices:
 						execute.execute(child,commands)
 						#time.sleep(50)
 						child.sendcontrol('m')
-						print "IP address of  %s interface of device %s  unset" % (interface,Device)
+		#				print "IP address of  %s interface of device %s  unset" % (interface,Device)
 						
 			return True
 		else:	
 			
-			print 'Device is OFF'	
+		#	print 'Device is OFF'	
 			return False
 	
 	def set_loopback(self,Device,Action):
@@ -210,7 +211,7 @@ class Devices:
 		ip_add = device_data['Device_Details'][Device]["ip_add"]
 		child = self.connect(Device)
 		if child != False:
-			self.flushBuffer(5,child)
+			clear_buffer.flushBuffer(5,child)
 			child.sendcontrol('m')
 			child.sendcontrol('m')
 			child.sendcontrol('m')
@@ -230,7 +231,7 @@ class Devices:
 				execute.execute(child,commands)
 				#time.sleep(40)
 				child.sendcontrol('m')
-				print "IP address of  loopback interface of device %s  set" % (Device)
+		#		print "IP address of  loopback interface of device %s  set" % (Device)
 				
 			else:
 				unconfig = """ 	
@@ -251,16 +252,7 @@ class Devices:
 			return False
 
 			
-	def flushBuffer(self,delay,child):
-		try:# Greedily read in all the incoming characters
-			child.expect("ZzqQJjSh_Impossible_String", timeout = delay)
-		except pexpect.TIMEOUT:
-			pass
-		# Clear local input buffer inside the spawn Class
-		child.buffer = child.string_type()
-		return child.before
-
-
+	
 	
 
 		

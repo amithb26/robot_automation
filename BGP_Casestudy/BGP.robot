@@ -38,8 +38,7 @@ Resource          Resource.robot
 
 Suite Setup       Setup Actions
 
-
-#Suite Teardown    Teardown Actions
+Suite Teardown    Teardown Actions
 
 *** Test Cases ***
 
@@ -52,7 +51,6 @@ Bring_up Phase
     Configure OSPF within AS2 to advertise the connected networks
 	    Enable OSPF in devices present in AS2 and set the ospf neighbors
 
-
     Configure IBGP and source the BGP updates from the loopback0 interfaces
 	    Enable BGP and advertise the updates from the loopback interface
 
@@ -60,24 +58,26 @@ Bring_up Phase
 	    Enable synchronisation between border routers
 
 
-    Configure EBGP 
+    Configure EBGP and source the BGP updates from the loopback0 interfaces
 	    Enable BGP and advertise networks connected outside the autonomous system
 
-    Advertise the loopback interface
-	    STEP 1  Advertise loopback interface on AS1 and AS3
+    Advertise loopback interface on AS1 and AS3
+
+
+
+
+
 
 *** Comment ***
 Operational Phase
 
     Ensure that different autonomous systems can communicate with each other
-	    STEP 1  Check link status
-	    STEP 2  Check if BGP neighbors are established
-	    STEP 3  Redistribute in order to make routes available in IBGP table
-	    STEP 4  Ensure all networks are reachable from a device using commands
-
-
-
-
+		Check if ip addresses is set and interface is  up
+		Ensure all networks are reachable from a device using "ping"
+	        Check if OSPF neighbors are established
+		Redistribute in order to make routes available in IBGP table
+		Check if all routes are learnt by devices  
+	 	
 
      
 

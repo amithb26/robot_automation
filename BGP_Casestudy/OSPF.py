@@ -24,7 +24,7 @@ class OSPF:
 			child.sendcontrol('m')
 			#time.sleep(20)
 			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
-			print 'flag =%d' % flag
+			#print 'flag =%d' % flag
 			if flag==0 or flag==2:
 				Dev.Login(self,Device,child)
 				if Action == 'enable':
@@ -42,11 +42,11 @@ class OSPF:
 								execute.execute(child,commands)
 			#					time.sleep(6)
 								child.sendcontrol('m')
-								print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
+			#					print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
 								time.sleep(30)
 						child.sendline('exit')
 						child.sendcontrol('m')
-						print "OSPF enabled & neighbors set in %s" % Device
+			#			print "OSPF enabled & neighbors set in %s" % Device
 					else:
 						NID = Networks_connected
 						configs = """
@@ -59,8 +59,8 @@ class OSPF:
 						execute.execute(child,commands)
 			#			time.sleep(15)
 						child.sendcontrol('m')
-						print '%s advertises I AM CONNECTED TO %s NETWORK' % (Device,NID)
-						print "OSPF enabled & neighbors set in %s" % Device
+			#			print '%s advertises I AM CONNECTED TO %s NETWORK' % (Device,NID)
+			#			print "OSPF enabled & neighbors set in %s" % Device
 
 				else:
 					unconfig = """
@@ -72,7 +72,7 @@ class OSPF:
 					execute.execute(child,commands)
 			#		time.sleep(15)
 					child.sendcontrol('m')
-					print "OSPF disabled  and neighbors unset in %s" % Device
+			#		print "OSPF disabled  and neighbors unset in %s" % Device
 			
 
 		
@@ -80,7 +80,7 @@ class OSPF:
 				if Action == 'enable':
 					if (isinstance(Networks_connected,list)):
 						for NID in Networks_connected:
-								print NID
+			#					print NID
 								configs = """
 								configure terminal
 								router ospf %s
@@ -92,11 +92,11 @@ class OSPF:
 								execute.execute(child,commands)
 			#					time.sleep(6)
 								child.sendcontrol('m')
-								print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
+			#					print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
 			#					time.sleep(30)
 						child.sendline('exit')
 						child.sendcontrol('m')
-						print "OSPF enabled & neighbors set in %s" % Device
+			#			print "OSPF enabled & neighbors set in %s" % Device
 					else:
 						NID = Networks_connected
 						configs = """
@@ -109,8 +109,8 @@ class OSPF:
 						execute.execute(child,commands)
 			#			time.sleep(15)
 						child.sendcontrol('m')
-						print '%s advertises I AM CONNECTED TO %s NETWORK' % (Device,NID)
-						print "OSPF enabled & neighbors set in %s" % Device
+			#			print '%s advertises I AM CONNECTED TO %s NETWORK' % (Device,NID)
+			#			print "OSPF enabled & neighbors set in %s" % Device
 
 				else:
 					unconfig = """
@@ -122,12 +122,12 @@ class OSPF:
 					execute.execute(child,commands)
 			#		time.sleep(15)
 					child.sendcontrol('m')
-					print "OSPF disabled  and neighbors unset in %s" % Device
+			#		print "OSPF disabled  and neighbors unset in %s" % Device
 			
 
 		
-			else:
-				print 'Expected prompt not found'
+			#else:
+			#	print 'Expected prompt not found'
 
 		        return True
 		

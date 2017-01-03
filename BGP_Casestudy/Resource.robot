@@ -3,12 +3,10 @@ Documentation     Resource file containing all the PYTHON API implementations.
 
 Library           setup_actions.py
 Library           Devices.py
-Library           String
-Variables         variable.py
 Library           OSPF.py
 Library           IBGP.py
-
-
+Library           String
+Variables         variable.py
 
 
 *** Variables ***
@@ -48,7 +46,7 @@ Teardown Actions
     \    Log To Console    Loopback_address unset in ${ELEMENT}
 
      
-    Log To Console            Disabling password and unset password  
+    Log To Console            Disabling password and unsetting hostname 
     Run Keyword and Continue On Failure    connect_all    disable
     
 Configure IP addresses as per the topology
@@ -114,20 +112,26 @@ Enable BGP Synchronisation
     Log To Console    Enabling BGP synchronization
 
 Enable synchronisation between border routers
+
     Run Keyword and Continue On Failure    enable_syn    R2    ${AS_id} 
     Run Keyword and Continue On Failure    enable_syn    R3    ${AS_id}
 
 
-Configure EBGP 
+Configure EBGP
+ 
     Log To Console    Configuring EBGP between devices in different autonomous systems
 
 
 
 Enable BGP and advertise networks connected outside the autonomous system
-     Run Keyword and Continue On Failure    Configuring_EBGP    R2    2    192.168.12.1    1    enable     
-     Run Keyword and Continue On Failure    Configuring_EBGP    R4    1    192.168.12.2    2    enable
-     Run Keyword and Continue On Failure    Configuring_EBGP    R3    2    192.168.45.5    3    enable
-     Run Keyword and Continue On Failure    Configuring_EBGP    R5    3    192.168.45.4    2    enable
+    Run Keyword and Continue On Failure    Configuring_EBGP    R2    ${R2_AS_id}    ${R2_einterface}    ${R2_neighbor_AS_id}    enable     
+    Run Keyword and Continue On Failure    Configuring_EBGP    R4    ${R4_AS_id}    ${R4_einterface}    ${R4_neighbor_AS_id}    enable
+    Run Keyword and Continue On Failure    Configuring_EBGP    R3    ${R3_AS_id}    ${R3_einterface}    ${R3_neighbor_AS_id}    enable
+    Run Keyword and Continue On Failure    Configuring_EBGP    R5    ${R5_AS_id}    ${R5_einterface}    ${R5_neighbor_AS_id}    enable
+
+Advertise loopback interface on AS1 and AS3
+    Run Keyword and Continue On Failure    advertising_loopback    R4    ${R4_AS_id}    ${R4_interface}    ${mask}
+    Run Keyword and Continue On Failure    advertising_loopback    R5    ${R5_AS_id}    ${R5_interface}    ${mask}
 
 
 *** Keywords ***
@@ -149,16 +153,38 @@ Configuring_ospf
 
 
 Configuring_IBGP
-    [Arguments]    ${device}    ${AS_id}    ${R1_interface}    ${action}
-    ${result}=    Configure_IBGP    ${device}    ${AS_id}    ${R1_interface}    ${action} 
+    [Arguments]    ${device}    ${AS_id}    ${interface}    ${action}
+    ${result}=    Configure_IBGP    ${device}    ${AS_id}    ${interface}    ${action} 
     Run Keyword If    ${result}==False    FAIL    Configuring ibgp on ${device} has failed 
 
 
 Configuring_EBGP
-    [Arguments]    ${device}    ${AS_id}    ${R1_interface}    ${neighbor_AS_id}    ${action}
-    ${result}=    Configure_EBGP    ${device}    ${AS_id}    ${R1_interface}    ${neighbor_AS_id}    ${action} 
+    [Arguments]    ${device}    ${AS_id}    ${interface}    ${neighbor_AS_id}    ${action}
+    ${result}=    Configure_EBGP    ${device}    ${AS_id}    ${interface}    ${neighbor_AS_id}    ${action} 
     Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
 
 
-          
+Ensure that different autonomous systems can communicate with each other
+    Log To Console    Checking if systems can communicate with each other
+
+
+Check if ip addresses is set and interface is  up using "show ip interface brief"
+    :FOR    ${ELEMENT}    IN    @{Devices}
+    \${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip interface brief
+    \Run Keyword If    ${result}==False    FAIL    ip address not set or interface not up in  ${ELEMENT}  
+    
+Ensure all networks are reachable from a device using "ping"
+
+
+Check if OSPF neighbors are established using "show ip ospf neighbor"
+    :FOR    ${ELEMENT}    IN    @{Devices}
+    \${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip ospf neighbor
+    \Run Keyword If    ${result}==False    FAIL    neighbor not established ${ELEMENT} 
+
+Check if all routes are learnt by devices  
+    :FOR    ${ELEMENT}    IN    @{Devices}
+    \${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip bgp
+    \Run Keyword If    ${result}==False    FAIL    routes not learnt ${ELEMENT}  	 
+    
+    
    
