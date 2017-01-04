@@ -5,6 +5,7 @@ Library           setup_actions.py
 Library           Devices.py
 Library           OSPF.py
 Library           IBGP.py
+Library		  operational_ph.py
 Library           String
 Variables         variable.py
 
@@ -100,7 +101,7 @@ Configure IBGP and source the BGP updates from the loopback0 interfaces
     Log To Console    Setting IBGP between R2 and R3
     
 
-Enable BGP and advertise the updates from the loopback interface
+Enable IBGP and advertise the updates from the loopback interface
 
     Run Keyword and Continue On Failure    Configuring_IBGP    R2    ${AS_id}    ${R3_interface}    enable        
     Log To Console    IBGP configured in R2
@@ -116,8 +117,7 @@ Enable synchronisation between border routers
     Run Keyword and Continue On Failure    enable_syn    R2    ${AS_id} 
     Run Keyword and Continue On Failure    enable_syn    R3    ${AS_id}
 
-
-Configure EBGP
+Configure EBGP and source the BGP updates from the loopback0 interfaces
  
     Log To Console    Configuring EBGP between devices in different autonomous systems
 
@@ -130,8 +130,8 @@ Enable BGP and advertise networks connected outside the autonomous system
     Run Keyword and Continue On Failure    Configuring_EBGP    R5    ${R5_AS_id}    ${R5_einterface}    ${R5_neighbor_AS_id}    enable
 
 Advertise loopback interface on AS1 and AS3
-    Run Keyword and Continue On Failure    advertising_loopback    R4    ${R4_AS_id}    ${R4_interface}    ${mask}
-    Run Keyword and Continue On Failure    advertising_loopback    R5    ${R5_AS_id}    ${R5_interface}    ${mask}
+    Run Keyword and Continue On Failure    advertising_loopback    R4    ${R4_AS_id}    ${R4_interface}    ${R4_mask}
+    Run Keyword and Continue On Failure    advertising_loopback    R5    ${R5_AS_id}    ${R5_interface}    ${R5_mask}
 
 
 *** Keywords ***
@@ -164,27 +164,29 @@ Configuring_EBGP
     Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
 
 
-Ensure that different autonomous systems can communicate with each other
-    Log To Console    Checking if systems can communicate with each other
-
-
 Check if ip addresses is set and interface is  up using "show ip interface brief"
     :FOR    ${ELEMENT}    IN    @{Devices}
-    \${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip interface brief
-    \Run Keyword If    ${result}==False    FAIL    ip address not set or interface not up in  ${ELEMENT}  
-    
-Ensure all networks are reachable from a device using "ping"
+    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip interface brief
+    \     Log    Interfaces up in ${ELEMENT}
+    \    Run Keyword If    ${result}==False    FAIL    ip address not set or interface not up in  ${ELEMENT} 
 
+
+Ensure that different autonomous systems can communicate with each other
+    Log    autonomous system communication validated
+    
+    
 
 Check if OSPF neighbors are established using "show ip ospf neighbor"
     :FOR    ${ELEMENT}    IN    @{Devices}
-    \${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip ospf neighbor
-    \Run Keyword If    ${result}==False    FAIL    neighbor not established ${ELEMENT} 
+    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip ospf neighbor
+    \    Log     OSPF neighbors learnt in ${ELEMENT}
+    \    Run Keyword If    ${result}==False    FAIL    neighbor not established ${ELEMENT} 
 
 Check if all routes are learnt by devices  
     :FOR    ${ELEMENT}    IN    @{Devices}
-    \${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip bgp
-    \Run Keyword If    ${result}==False    FAIL    routes not learnt ${ELEMENT}  	 
+    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip bgp
+    \    Log    Routes learnt by ${Element}
+    \    Run Keyword If    ${result}==False    FAIL    routes not learnt ${ELEMENT}  	 
     
     
    

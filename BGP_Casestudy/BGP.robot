@@ -52,7 +52,7 @@ Bring_up Phase
 	    Enable OSPF in devices present in AS2 and set the ospf neighbors
 
     Configure IBGP and source the BGP updates from the loopback0 interfaces
-	    Enable BGP and advertise the updates from the loopback interface
+	    Enable IBGP and advertise the updates from the loopback interface
 
     Enable BGP Synchronisation
 	    Enable synchronisation between border routers
@@ -64,19 +64,17 @@ Bring_up Phase
     Advertise loopback interface on AS1 and AS3
 
 
-
-
-
-
-*** Comment ***
 Operational Phase
 
+    Check if ip addresses is set and interface is  up 
+
     Ensure that different autonomous systems can communicate with each other
-		Check if ip addresses is set and interface is  up
-		Ensure all networks are reachable from a device using "ping"
-	        Check if OSPF neighbors are established
-		Redistribute in order to make routes available in IBGP table
-		Check if all routes are learnt by devices  
+
+    Check if OSPF neighbors are established
+		
+    Redistribute in order to make routes available in IBGP table
+		
+    Check if all routes are learnt by devices  
 	 	
 
      
