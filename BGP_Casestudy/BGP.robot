@@ -66,14 +66,12 @@ Bring_up Phase
 
 Operational Phase
 
-    Check if ip addresses is set and interface is  up 
+    Check if ip address is set and interface is  up 
 
     Ensure that different autonomous systems can communicate with each other
 
     Check if OSPF neighbors are established
-		
-    Redistribute in order to make routes available in IBGP table
-		
+			
     Check if all routes are learnt by devices  
 	 	
 

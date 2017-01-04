@@ -9,9 +9,9 @@ Library		  operational_ph.py
 Library           String
 Variables         variable.py
 
-
 *** Variables ***
-@{Devices} =      R1    R2    R3    R4    R5 
+
+@{Devices} =      R1    R2    R3    R4    R5   
 ${ELEMENT}
 
 *** Keywords ***
@@ -19,15 +19,16 @@ ${ELEMENT}
 Setup Actions
 
     Log To Console            Setup Actions done here
+
     Run Keyword and Continue On Failure    connect_all    enable
-    Log To console            Initial setup completed
-   
+
     
 Teardown Actions
 
     Log To Console            Teardown Actions done here
 
     Log To Console            Unconfiguring IP_Address 
+
     Run Keyword and Continue On Failure    Configuring IP_Address     R1    ${Links_of_R1}    unconfigure
     Log To Console            IP_Address unconfigured in R1
     Run Keyword and Continue On Failure    Configuring IP_Address     R2    ${Links_of_R2}    unconfigure
@@ -41,8 +42,7 @@ Teardown Actions
 		
     Log To Console            Unsetting loopback interface	
     Log To Console            ${Devices}
-    :FOR    ${ELEMENT}    IN    @{Devices}
-    \    Log To Console    ${ELEMENT}
+    :FOR    ${ELEMENT}    IN    @{Devices}   
     \    Setting Loopback interface    ${ELEMENT}    unset
     \    Log To Console    Loopback_address unset in ${ELEMENT}
 
@@ -121,8 +121,6 @@ Configure EBGP and source the BGP updates from the loopback0 interfaces
  
     Log To Console    Configuring EBGP between devices in different autonomous systems
 
-
-
 Enable BGP and advertise networks connected outside the autonomous system
     Run Keyword and Continue On Failure    Configuring_EBGP    R2    ${R2_AS_id}    ${R2_einterface}    ${R2_neighbor_AS_id}    enable     
     Run Keyword and Continue On Failure    Configuring_EBGP    R4    ${R4_AS_id}    ${R4_einterface}    ${R4_neighbor_AS_id}    enable
@@ -132,6 +130,37 @@ Enable BGP and advertise networks connected outside the autonomous system
 Advertise loopback interface on AS1 and AS3
     Run Keyword and Continue On Failure    advertising_loopback    R4    ${R4_AS_id}    ${R4_interface}    ${R4_mask}
     Run Keyword and Continue On Failure    advertising_loopback    R5    ${R5_AS_id}    ${R5_interface}    ${R5_mask}
+
+
+
+Check if ip address is set and interface is  up 
+
+    :FOR    ${ELEMENT}    IN    @{Devices}
+    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip interface brief
+    \     Log    Interfaces up in ${ELEMENT}
+    \    Run Keyword If    ${result}==False    FAIL    ip address not set or interface not up in  ${ELEMENT} 
+
+
+Ensure that different autonomous systems can communicate with each other
+
+    Log    autonomous system communication validated
+    
+    
+
+Check if OSPF neighbors are established
+    :FOR    ${ELEMENT}    IN    @{Devices}
+    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip ospf neighbor
+    \    Log     OSPF neighbors learnt in ${ELEMENT}
+    \    Run Keyword If    ${result}==False    FAIL    neighbor not established ${ELEMENT} 
+
+Check if all routes are learnt by devices   
+    :FOR    ${ELEMENT}    IN    @{Devices}
+    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip bgp
+    \    Log    Routes learnt by ${Element}
+    \    Run Keyword If    ${result}==False    FAIL    routes not learnt ${ELEMENT}  	 
+    
+    
+   
 
 
 *** Keywords ***
@@ -164,29 +193,4 @@ Configuring_EBGP
     Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
 
 
-Check if ip addresses is set and interface is  up using "show ip interface brief"
-    :FOR    ${ELEMENT}    IN    @{Devices}
-    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip interface brief
-    \     Log    Interfaces up in ${ELEMENT}
-    \    Run Keyword If    ${result}==False    FAIL    ip address not set or interface not up in  ${ELEMENT} 
 
-
-Ensure that different autonomous systems can communicate with each other
-    Log    autonomous system communication validated
-    
-    
-
-Check if OSPF neighbors are established using "show ip ospf neighbor"
-    :FOR    ${ELEMENT}    IN    @{Devices}
-    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip ospf neighbor
-    \    Log     OSPF neighbors learnt in ${ELEMENT}
-    \    Run Keyword If    ${result}==False    FAIL    neighbor not established ${ELEMENT} 
-
-Check if all routes are learnt by devices  
-    :FOR    ${ELEMENT}    IN    @{Devices}
-    \    ${result}=    Run Keyword and Continue On Failure    checking_operabilty    ${ELEMENT}    show ip bgp
-    \    Log    Routes learnt by ${Element}
-    \    Run Keyword If    ${result}==False    FAIL    routes not learnt ${ELEMENT}  	 
-    
-    
-   
