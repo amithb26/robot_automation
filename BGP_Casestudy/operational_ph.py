@@ -6,7 +6,7 @@ import Devices
 import clear_buffer
 
 
-def checking_operabilty(self,Device,command):
+def checking_operabilty(Device,command):
 		device_data = getdata.get_data()
 		hostname = device_data['Device_Details'][Device]['Hostname']
 		Dev = Devices.Devices()

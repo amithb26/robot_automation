@@ -43,7 +43,7 @@ class OSPF:
 			#					time.sleep(6)
 								child.sendcontrol('m')
 			#					print "%s advertises 'I AM CONNECTED TO %s NETWORK'" % (Device,NID)
-								time.sleep(30)
+					#			time.sleep(30)
 						child.sendline('exit')
 						child.sendcontrol('m')
 			#			print "OSPF enabled & neighbors set in %s" % Device

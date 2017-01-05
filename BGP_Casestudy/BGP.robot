@@ -42,6 +42,9 @@ Suite Teardown    Teardown Actions
 
 *** Test Cases ***
 
+
+
+
 Bring_up Phase
     
     Configure IP addresses as per the topology
@@ -61,18 +64,24 @@ Bring_up Phase
     Configure EBGP and source the BGP updates from the loopback0 interfaces
 	    Enable BGP and advertise networks connected outside the autonomous system
 
-    Advertise loopback interface on AS1 and AS3
+            Advertise loopback interface on AS1 and AS3
 
+            Establish route between R2 and R3
+
+            Redistribute routes from OSPF into BGP
+   
 
 Operational Phase
 
-    Check if ip address is set and interface is  up 
+    Check if ip address is set and interface is up 
 
     Ensure that different autonomous systems can communicate with each other
 
     Check if OSPF neighbors are established
 			
     Check if all routes are learnt by devices  
+
+
 	 	
 
      

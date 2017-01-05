@@ -64,7 +64,8 @@ R5_interface = "5.5.5.0"
 R5_mask = "255.255.255.0"			
 
 
-
+R2_lointerface = "2.2.2.2"
+R3_lointerface = "4.4.4.4"
 
 
 
