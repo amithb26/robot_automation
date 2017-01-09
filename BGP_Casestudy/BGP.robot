@@ -50,7 +50,7 @@ Bring_up Phase
     Configure IP addresses as per the topology
 	    Configure ip address 
 	    Set loopback interface
-   
+  
     Configure OSPF within AS2 to advertise the connected networks
 	    Enable OSPF in devices present in AS2 and set the ospf neighbors
 

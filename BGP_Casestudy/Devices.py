@@ -20,21 +20,21 @@ class Devices:
 		child.sendcontrol('m')
 		#self.flushBuffer(5,child)
 		child.sendcontrol('m')
-		#child.sendcontrol('m')
+		child.sendcontrol('m')
 		flag = child.expect(['Router>','Router#',hostname+'>',hostname+'#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)
-		#print 'flag=%d' % flag
+		print 'flag=%d' % flag
 
 		if (flag == 0 or flag == 1  or flag == 2  or flag == 3):
 		        #time.sleep(35)
-			#print 'Connection established with %s' % Device
+			print 'Connection established with %s' % Device
 			self.Login(Device,child)
 
 		if flag == 4:
-			#print 'Unable to connect to remote host %s:Connection refused' %Device
+			print 'Unable to connect to remote host %s:Connection refused' %Device
 			return False
 
 		if flag == 5:
-			#print 'Timeout. Trying to connect again'
+			print 'Timeout. Trying to connect again'
 			self.connect(Device)
 
 		return child
@@ -102,10 +102,10 @@ class Devices:
 			#child.sendcontrol('m')
 			child.sendcontrol('m')
 			flag = child.expect([hostname+'>',hostname+'#','Router\>','Router\#',pexpect.EOF,pexpect.TIMEOUT],timeout=50)		
-		#	print 'flag=%d' % flag
+			print 'flag=%d' % flag
 
 			if (flag == 4 or flag == 5):
-		#		print "Expected prompt not present"
+				print "Expected prompt not present"
 				#time.sleep(5)
 				child.sendcontrol('m')
 		

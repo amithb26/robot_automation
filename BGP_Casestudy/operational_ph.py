@@ -26,7 +26,7 @@ def checking_operabilty(Device,command):
 				""" % (command)
 				commands = configs.split('\n')
 				execute.execute(child,commands)
-				time.sleep(15)
+				#time.sleep(15)
 				child.sendcontrol('m')
 			#	print "BGP synchronization enabled in %s " % (Device)
 
@@ -36,7 +36,7 @@ def checking_operabilty(Device,command):
 				""" % (command)
 				commands = configs.split('\n')
 				execute.execute(child,commands)
-				time.sleep(15)
+				#time.sleep(15)
 				child.sendcontrol('m')
 			#	print "BGP synchronization enabled in %s " % (Device)
 

@@ -49,29 +49,27 @@ Configure IP addresses as per the topology
     Log To Console            Configuring IP_Address 
   
 Configure ip address
-
-    Log To Console            Configuring IP_Address
  
     ${result}=    Run Keyword and Continue On Failure    set_IP     R1    ${Links_of_R1}    configure
-    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on R1 has failed
     Log To Console            IP_Address configured in R1
 
     
     ${result}=    Run Keyword and Continue On Failure    set_IP     R2    ${Links_of_R2}    configure
-    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on R2 has failed
     Log To Console            IP_Address configured in R2
 
     
     ${result}=    Run Keyword and Continue On Failure    set_IP     R3    ${Links_of_R3}    configure
-    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on R3 has failed
     Log To Console            IP_Address configured in R3
 
     ${result}=    Run Keyword and Continue On Failure    set_IP     R4    ${Links_of_R4}    configure
-    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on R4 has failed
     Log To Console            IP_Address configured in R4
 
     ${result}=    Run Keyword and Continue On Failure    set_IP     R5    ${Links_of_R5}    configure
-    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring IP Address on R5 has failed
     Log To Console            IP_Address configured in R5
 
 Set loopback interface 
@@ -79,23 +77,23 @@ Set loopback interface
     Log To Console            Setting Loopback interface
 
     ${result}=    Run Keyword and Continue On Failure    set_loopback     R1    set
-    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on ${device} has failed    
+    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on R1 has failed    
     Log To Console            Loopback_Address configured in R1
 
     ${result}=    Run Keyword and Continue On Failure    set_loopback     R2    set
-    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on ${device} has failed    
+    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on R2 has failed    
     Log To Console            Loopback_Address configured in R2
 
     ${result}=    Run Keyword and Continue On Failure    set_loopback     R3    set
-    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on ${device} has failed    
+    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on R3 has failed    
     Log To Console            Loopback_Address configured in R3
 
     ${result}=    Run Keyword and Continue On Failure    set_loopback     R4    set
-    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on ${device} has failed    
+    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on R4 has failed    
     Log To Console            Loopback_Address configured in R4
     
     ${result}=    Run Keyword and Continue On Failure    set_loopback     R5    set
-    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on ${device} has failed    
+    Run Keyword If    ${result}==False    FAIL    Configuring Loopback IP on R5 has failed    
     Log To Console            Loopback_Address configured in R5
 
 
@@ -106,16 +104,16 @@ Configure OSPF within AS2 to advertise the connected networks
 Enable OSPF in devices present in AS2 and set the ospf neighbors
 
     ${result}=    Run Keyword and Continue On Failure    Configure_ospf    R1    ${Process_id}    ${Networks_connected_to_R1}    ${Area1}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ospf on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring ospf on R1 has failed
     Log To Console            OSPF configured in R1
 
 
     ${result}=    Run Keyword and Continue On Failure    Configure_ospf    R2    ${Process_id}    ${Networks_connected_to_R2}    ${Area1}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ospf on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring ospf on R2 has failed
     Log To Console            OSPF configured in R2
 
     ${result}=    Run Keyword and Continue On Failure    Configure_ospf    R3    ${Process_id}    ${Networks_connected_to_R3}    ${Area1}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ospf on ${device} has failed
+    Run Keyword If    ${result}==False    FAIL    Configuring ospf on R3 has failed
     Log To Console            OSPF configured in R3
 
 
@@ -127,11 +125,11 @@ Configure IBGP and source the BGP updates from the loopback0 interfaces
 Enable IBGP and advertise the updates from the loopback interface
 
     ${result}=    Run Keyword and Continue On Failure    Configure_IBGP    R2    ${AS_id}    ${R3_interface}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ibgp on ${device} has failed         
+    Run Keyword If    ${result}==False    FAIL    Configuring ibgp on R2 has failed         
     Log To Console    IBGP configured in R2
 
     ${result}=    Run Keyword and Continue On Failure    Configure_IBGP    R3    ${AS_id}    ${R2_interface}    enable              
-    Run Keyword If    ${result}==False    FAIL    Configuring ibgp on ${device} has failed 
+    Run Keyword If    ${result}==False    FAIL    Configuring ibgp on R3 has failed 
     Log To Console    IBGP configured in R3
 
 Enable BGP Synchronisation
@@ -150,19 +148,19 @@ Configure EBGP and source the BGP updates from the loopback0 interfaces
 Enable BGP and advertise networks connected outside the autonomous system
 
     ${result}=    Run Keyword and Continue On Failure    Configure_EBGP    R2    ${R2_AS_id}    ${R2_einterface}    ${R2_neighbor_AS_id}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
+    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on R2 has failed 
     Log To Console    EBGP configured in R2     
     
     ${result}=    Run Keyword and Continue On Failure    Configure_EBGP    R4    ${R4_AS_id}    ${R4_einterface}    ${R4_neighbor_AS_id}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
+    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on R4 has failed 
     Log To Console    EBGP configured in R4
     
     ${result}=    Run Keyword and Continue On Failure    Configure_EBGP    R3    ${R3_AS_id}    ${R3_einterface}    ${R3_neighbor_AS_id}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
+    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on R3 has failed 
     Log To Console    EBGP configured in R3
 
     ${result}=    Run Keyword and Continue On Failure    Configure_EBGP    R5    ${R5_AS_id}    ${R5_einterface}    ${R5_neighbor_AS_id}    enable
-    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on ${device} has failed 
+    Run Keyword If    ${result}==False    FAIL    Configuring ebgp on R5 has failed 
     Log To Console    EBGP configured in R5
 
 Advertise loopback interface on AS1 and AS3

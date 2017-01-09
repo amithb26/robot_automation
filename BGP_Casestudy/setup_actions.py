@@ -44,6 +44,7 @@ class setup_actions:
 
 			if flag == 2 or flag == 3:
 				#print "Hostname and password already set"
+				self._enable_pwd(child,keys,devices)
 				passwd = devices[keys]['pwd']
 				if Action == 'disable':
 					child.sendcontrol('m')
@@ -105,6 +106,7 @@ class setup_actions:
 
 	#	if flag == 1:
 	#		print 'Hostname set'
+			flag=2
 
 		if flag == 2:
 			child.sendcontrol('m')
